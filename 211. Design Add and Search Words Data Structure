@@ -1,0 +1,63 @@
+class WordDictionary {
+    private Node root;
+
+    public WordDictionary() {
+        root = new Node();
+    }
+    
+    public void addWord(String word) {
+        Node node = root;
+        for(int i = 0;i < word.length();i++){
+            if(!node.containsChar(word.charAt(i))){
+                node.put(word.charAt(i), new Node());
+            }
+            node = node.get(word.charAt(i));
+        }
+        node.setEnd();
+    }
+    
+    public boolean search(String word) {
+        return dfs(word, 0, root);
+    }
+
+    private boolean dfs(String word, int idx, Node node) {
+        if(idx == word.length()) return node.isEnd();
+        char ch = word.charAt(idx);
+        if(ch == '.'){
+            for(int i = 0;i < 26;i++){
+                if(node.links[i] != null && dfs(word, idx+1, node.links[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            if(!node.containsChar(ch)) return false;
+            return dfs(word, idx+1, node.get(ch));
+        }
+    }
+}
+
+class Node {
+    Node[] links = new Node[26];
+    boolean flag;
+
+    boolean containsChar(char ch){
+        return (links[ch - 'a'] != null);
+    }
+
+    Node get(char ch){
+        return links[ch - 'a'];
+    }
+
+    void put(char ch, Node root){
+        links[ch - 'a'] = root;
+    }
+
+    boolean isEnd(){
+        return flag;
+    }
+
+    void setEnd(){
+        flag = true;
+    }
+}
