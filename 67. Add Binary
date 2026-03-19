@@ -1,0 +1,29 @@
+class Solution {
+    public String addBinary(String a, String b) {
+        StringBuilder result = new StringBuilder();
+        int i = a.length() - 1, j = b.length() - 1, carry = 0;
+
+        while (i >= 0 || j >= 0 || carry > 0) {
+            int sum = carry;
+            if (i >= 0) sum += a.charAt(i--) - '0';
+            if (j >= 0) sum += b.charAt(j--) - '0';
+            result.append(sum % 2);   // append the binary digit
+            carry = sum / 2;          // update carry
+        }
+        return result.reverse().toString();
+    }
+
+    public String addBinaryyy(String a, String b) {
+        // Convert binary strings to integers
+        int x = Integer.parseInt(a, 2);
+        int y = Integer.parseInt(b, 2);
+
+        // Perform bit manipulation addition
+        while (y != 0) {
+            int carry = x & y;      // common set bits
+            x = x ^ y;              // sum without carry
+            y = carry << 1;         // carry shifted
+        }
+        return Integer.toBinaryString(x);
+    }
+}
